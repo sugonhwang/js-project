@@ -21,6 +21,7 @@ let playButton = document.getElementById("play-button");
 let resultValue = document.getElementById("result-message");
 let restartButton = document.getElementById("restart-button");
 let chanceCount = document.getElementById("chance-count");
+let inputHistory = document.getElementById("input-history");
 
 playButton.addEventListener("click", play);
 restartButton.addEventListener("click", restart);
@@ -57,20 +58,22 @@ function play() {
   } else {
     resultValue.textContent = "🎉 Congratulations!!!";
     gameOver = true;
+    playButton.disabled = true;
+    return;
   }
 
   historyArray.push(userValue);
+  inputHistory.textContent = "입력한 숫자: " + historyArray.join(", ");
   console.log(historyArray);
 
   if (chances < 1) {
     gameOver === true;
-    playButton.disabled = true;
     resultValue.textContent = "기회를 모두 소진하셨습니다. 다시 게임을 시작해주세요";
   }
 
   if (gameOver === true) {
-    playButton.disabled = true;
     resultValue.textContent = "게임이 종료되었습니다. 다시 게임을 시작해주세요";
+    playButton.disabled = true;
   }
 }
 
@@ -82,6 +85,7 @@ function restart() {
   resultValue.textContent = "♻️ 게임이 재시작 되었습니다.";
   playButton.disabled = false;
   historyArray = []; // 게임 한판이 끝났을 때 다시 배열을 초기화 하여 새롭게 입력받은 숫자들에 한하여 중복 여부 검사
+  inputHistory.textContent = "입력한 숫자: ";
   gameOver = false;
 }
 

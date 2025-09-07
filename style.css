@@ -17,7 +17,7 @@ body {
   padding: 20px;
 }
 
-/* ========== START PAGE ========== */
+/* START PAGE (index.html) */
 .start-container {
   display: flex;
   flex-direction: column;
@@ -52,7 +52,7 @@ body {
   background-color: #ddd;
 }
 
-/* ========== GAME PAGE (index.html) ========== */
+/* GAME PAGE (start.html) */
 .game-container {
   background: #1c1c1c;
   padding: 40px 30px;
@@ -91,6 +91,7 @@ h1 {
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
+  margin-top: 20px;
 }
 
 #user-input {
