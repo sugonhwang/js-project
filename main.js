@@ -69,10 +69,10 @@ function play() {
   if (chances < 1) {
     gameOver === true;
     resultValue.textContent = "기회를 모두 소진하셨습니다. 다시 게임을 시작해주세요";
+    playButton.disabled = true;
   }
 
   if (gameOver === true) {
-    resultValue.textContent = "게임이 종료되었습니다. 다시 게임을 시작해주세요";
     playButton.disabled = true;
   }
 }
