@@ -1,0 +1,79 @@
+body {
+  margin: 0px;
+  background-image: url("./images/background.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.container {
+  background-color: white;
+  min-height: 100vh;
+  box-shadow:
+    rgba(0, 0, 0, 0.25) 0px 54px 55px,
+    rgba(0, 0, 0, 0.12) 0px -12px 30px,
+    rgba(0, 0, 0, 0.12) 0px 4px 6px,
+    rgba(0, 0, 0, 0.17) 0px 12px 13px,
+    rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.task-area {
+  border: 1px solid lightgray;
+  margin-top: 2em;
+}
+.task-tabs {
+  display: flex;
+  border-bottom: 1px solid lightgray;
+  position: relative;
+}
+
+.task-tabs div {
+  padding: 1em;
+}
+
+#under-line {
+  height: 4px;
+  background-color: lightskyblue;
+  position: absolute;
+  width: 65px;
+  left: 0px;
+  top: 52px;
+  padding: 0px;
+}
+
+.task {
+  display: flex;
+  justify-content: space-between;
+  padding: 1em;
+  border-bottom: 1px solid lightgray;
+}
+
+.task-done {
+  text-decoration: line-through;
+}
+
+.task-background {
+  background-color: lightgray;
+}
+
+.done-button {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.back-button {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.delete-button {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  font-size: 16px;
+}
