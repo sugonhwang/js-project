@@ -1,22 +1,38 @@
-# JS Project 1: 업다운 게임 <br>
-## 게임 로직
-  1. 랜덤 번호 지정(1~100)
-  2. 유저는 번호 입력 -> GO 버튼 클릭
-    - 유저가 랜덤 번호를 맞추면 "맞췄습니다" 출력
-    - 랜덤 번호 < 유저가 입력한 번호 -> "DOWN" 출력
-    - 랜덤 번호 > 유저가 입력한 번호 -> "UP" 출력
-    - 랜덤 번호 === 유저가 입력한 번호 -> "Congratulations" 출력
-  3. Reset 버튼을 누르면 게임이 리셋됨
-  4. 5번의 기회를 다 쓰면 게임이 끝남(GO 버튼 disable)
-  5. 1 ~ 100 범위를 벗어난 숫자를 입력하면 "1 ~ 100 내의 숫자를 입력하세요" 출력 + 기회 깎지 않음
-  6. 숫자 중복 입력 방지 -> "이미 입력한 숫자입니다. 다른 숫자를 입력하세요" 출력 + 기회 깎지 않음
-## 업데이트
-<details>
-  <summary>25.09.07</summary>
-  
-  - 메인 페이지 추가
-  
-  - 사용자가 입력한 숫자 화면에 출력
-    
-  - 반응형 디자인 구현
-</details>
+# JavaScript Projects Portfolio <br>
+
+바닐라 JavaScript로 구현한 다양한 프로젝트들의 모음입니다.
+
+## 🌐 Live Demo
+
+[https://sghwang-jsproject.netlify.app/](https://sghwang-jsproject.netlify.app/)
+
+## 📁 프로젝트 목록
+
+### 1. UP & Down Game
+
+- **데모**: [Live Demo](https://sghwang-jsproject.netlify.app/js-updown-game/)
+- **설명**: 임의의 숫자를 맞추는 게임
+- **기술 스택**: HTML, CSS, JavaScript
+- **주요 기능**:
+  - 1~100 사이 숫자 입력
+  - 숫자 중복 입력 방지
+  - 게임 재시작
+
+### 2. ToDo List
+
+- **데모**: [Live Demo](https://sghwang-jsproject.netlify.app/js-updown-game/)
+- **설명**: 간단한 ToDo List
+- **기술 스택**: HTML, CSS, JavaScript
+- **주요 기능**:
+  - 할 일 등록 및 삭제
+  - 할일 상태(진행중, 완료)별 필터링(진행 예정)
+  - 완료 시간 설정(진행 예정)
+
+## 🚀 로컬 실행 방법
+
+1. 저장소 클론
+
+```bash
+git clone https://github.com/username/js-project.git
+cd js-project
+```
