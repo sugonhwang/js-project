@@ -72,6 +72,7 @@ function render() {
   document.getElementById("task-board").innerHTML = resultHTML;
 }
 
+// 등록된 할 일 아이템 완료 <-> 취소 처리
 function toggleComplete(id) {
   for (let i = 0; i < taskList.length; i++) {
     // false -> true, 할 일 완료 처리
@@ -99,6 +100,7 @@ function deleteTask(id) {
   console.log(taskList);
 }
 
+// task 객체 id 번호 생성 함수
 function IdGenerate() {
   idCounter++;
   return "_" + idCounter;
