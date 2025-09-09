@@ -20,7 +20,7 @@
 
 ### 2. ToDo List
 
-- **데모**: [Live Demo](https://sghwang-jsproject.netlify.app/js-updown-game/)
+- **데모**: [Live Demo](https://sghwang-jsproject.netlify.app/js-todo-list/)
 - **설명**: 간단한 ToDo List
 - **기술 스택**: HTML, CSS, JavaScript
 - **주요 기능**:
