@@ -1,79 +1,194 @@
 body {
-  margin: 0px;
-  background-image: url("./images/background.jpeg");
-  background-repeat: no-repeat;
+  margin: 0;
+  font-family: "Comic Sans MS", "Segoe UI", sans-serif;
+  background-color: #f3e5ab;
+  background-image: url("./images/board-texture.jpg");
   background-size: cover;
-}
-.container {
-  background-color: white;
-  min-height: 100vh;
-  box-shadow:
-    rgba(0, 0, 0, 0.25) 0px 54px 55px,
-    rgba(0, 0, 0, 0.12) 0px -12px 30px,
-    rgba(0, 0, 0, 0.12) 0px 4px 6px,
-    rgba(0, 0, 0, 0.17) 0px 12px 13px,
-    rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  background-position: center;
 }
 
-.task-area {
-  border: 1px solid lightgray;
-  margin-top: 2em;
+.container {
+  background: rgba(255, 255, 255, 0.85);
+  min-height: 100vh;
+  padding: 2em;
+  border-radius: 16px;
+  box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.2);
+  max-width: 900px;
+  margin: auto;
 }
+
+/* 제목 */
+h1 {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 1em;
+  color: #333;
+  text-shadow: 1px 1px #fff;
+}
+
+/* 입력 영역 */
+.input-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.5em;
+  gap: 10px;
+}
+
+#task-input {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 2px solid #ddd;
+  font-size: 1rem;
+  box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+#task-input:focus {
+  outline: none;
+  border-color: #74c0fc;
+  box-shadow: 0 0 8px #74c0fc;
+}
+
+#add-button {
+  background-color: #74c0fc;
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+#add-button:hover:not(:disabled) {
+  transform: rotate(90deg) scale(1.1);
+}
+
+/* 탭 */
 .task-tabs {
   display: flex;
-  border-bottom: 1px solid lightgray;
+  justify-content: space-around;
+  border-bottom: 2px solid #ddd;
+  margin-bottom: 1em;
   position: relative;
 }
 
 .task-tabs div {
-  padding: 1em;
+  padding: 0.7em 1.2em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s;
 }
 
-#under-line {
-  height: 4px;
-  background-color: lightskyblue;
+.task-tabs div:hover {
+  color: #74c0fc;
+}
+
+#tab-line {
+  height: 2px;
+  background-color: #74c0fc;
   position: absolute;
-  width: 65px;
-  left: 0px;
-  top: 52px;
-  padding: 0px;
+  bottom: 0;
+  transition: 0.3s ease;
 }
 
+/* 포스트잇 스타일 */
 .task {
   display: flex;
   justify-content: space-between;
-  padding: 1em;
-  border-bottom: 1px solid lightgray;
+  align-items: center;
+  padding: 4em;
+  margin: 10px;
+  border-radius: 12px;
+  background: #fff7b2;
+  box-shadow: 4px 6px 10px rgba(0, 0, 0, 0.15);
+  transform: rotate(-1deg);
+  transition: transform 0.2s ease;
+}
+
+.task:hover {
+  transform: scale(1.03);
 }
 
 .task-done {
   text-decoration: line-through;
+  opacity: 0.6;
 }
 
+/* 포스트잇 색상 클래스 추가 */
+.task-red {
+  background: #ffd6d6;
+  transform: rotate(1deg);
+}
+.task-yellow {
+  background: #fff7b2;
+}
+.task-blue {
+  background: #d6f5ff;
+  transform: rotate(-2deg);
+}
+
+/* 완료된 할 일 배경색 */
 .task-background {
-  background-color: lightgray;
+  background: #ddd;
 }
 
-.done-button {
-  background: none;
-  border: none;
-  padding: 8px;
-  cursor: pointer;
-  font-size: 16px;
+/* 버튼 컨테이너 */
+.task-buttons {
+  display: flex;
+  gap: 10px;
+  margin-left: auto;
 }
 
-.back-button {
-  background: none;
-  border: none;
-  padding: 8px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
+/* 버튼 */
+.done-button,
+.back-button,
 .delete-button {
   background: none;
   border: none;
-  padding: 8px;
   cursor: pointer;
-  font-size: 16px;
+  transition: transform 0.2s;
+}
+
+.done-button:hover,
+.back-button:hover,
+.delete-button:hover {
+  transform: scale(1.2);
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .container {
+    padding: 1em;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  .task {
+    flex-direction: row;
+    align-items: center;
+    padding: 2em;
+  }
+}
+
+@media (max-width: 480px) {
+  #task-input {
+    font-size: 0.9rem;
+  }
+
+  /* 탭을 가로로 유지하기 위해 flex-direction: column을 삭제함 */
+  .task-tabs {
+    /* flex-direction: column; <- 이 부분을 삭제했습니다. */
+    border-bottom: 2px solid #ddd;
+  }
+
+  .task {
+    font-size: 0.9rem;
+  }
 }
