@@ -71,7 +71,7 @@ function addTask() {
   taskList.push(task);
   taskInput.value = ""; // 할 일 등록 후 input 탭 초기화
   console.log(taskList);
-  render();
+  filter();
 }
 
 // 등록한 아이템 화면에 그려주기
