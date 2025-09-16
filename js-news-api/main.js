@@ -1,7 +1,7 @@
 const API_KEY = `f636738a75f345269967e72b6d895e1a`;
 
 let newsList = [];
-let url = new URL(`https://newsapi.org/v2/top-headlines?page=2&country=us&apiKey=${API_KEY}`);
+let url = new URL(`https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?country=kr&apiKey=${API_KEY}`);
 const menuButton = document.querySelectorAll(".menus button");
 const searchInput = document.getElementById("search-input");
 
@@ -21,19 +21,21 @@ const getNews = async () => {
 };
 
 const getLatestNews = async () => {
-  url = new URL(`https://newsapi.org/v2/top-headlines?page=2&country=us&apiKey=${API_KEY}`);
+  url = new URL(`https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?country=kr&apiKey=${API_KEY}`);
+  menuButton.forEach((button) => button.classList.remove("active"));
   getNews();
 };
 
 const getNewsCategory = async (event) => {
   const category = event.target.textContent.toLowerCase();
-  url = new URL(`https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${API_KEY}`);
+  url = new URL(`https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?category=${category}`);
+  setActiveButton(category);
   getNews();
 };
 
 const getNewsByKeyword = async () => {
   const keyword = document.getElementById("search-input").value;
-  url = new URL(`https://newsapi.org/v2/top-headlines?country=us&q=${keyword}&apiKey=${API_KEY}`);
+  url = new URL(`https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?q=${keyword}`);
   getNews();
 };
 
@@ -53,5 +55,15 @@ const render = () => {
         </div>`
   );
   document.getElementById("news-board").innerHTML = newsHTML.join("");
+};
+
+// Business 버튼에 active 클래스 추가하는 함수
+const setActiveButton = (activeCategory) => {
+  menuButton.forEach((button) => button.classList.remove("active"));
+  menuButton.forEach((button) => {
+    if (button.textContent.toLowerCase() === activeCategory.toLowerCase()) {
+      button.classList.add("active");
+    }
+  });
 };
 getLatestNews();
