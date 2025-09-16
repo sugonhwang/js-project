@@ -45,3 +45,9 @@
   display: flex;
   justify-content: right;
 }
+
+.menus button.active {
+  background-color: #333;
+  color: white;
+  transition: 0.3s;
+}
