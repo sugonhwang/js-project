@@ -14,10 +14,24 @@ searchInput.addEventListener("keydown", function (e) {
 menuButton.forEach((menu) => menu.addEventListener("click", (event) => getNewsCategory(event)));
 
 const getNews = async () => {
-  const response = await fetch(url);
-  const data = await response.json();
-  newsList = data.articles;
-  render();
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    console.log(data);
+
+    if (response.status === 200) {
+      if (data.totalResults === 0) {
+        throw new Error("No Result Search your keyword");
+      }
+      newsList = data.articles;
+      render();
+    } else {
+      throw new Error(data.message);
+    }
+  } catch (error) {
+    console.log("error", error.message);
+    errRender(error.message);
+  }
 };
 
 const getLatestNews = async () => {
@@ -54,7 +68,15 @@ const render = () => {
           </div>
         </div>`
   );
+
   document.getElementById("news-board").innerHTML = newsHTML.join("");
+};
+
+const errRender = (errorMessage) => {
+  const errHTML = `<div class="alert alert-danger" role="alert">
+  ${errorMessage}
+</div>`;
+  document.getElementById("news-board").innerHTML = errHTML;
 };
 
 // Business 버튼에 active 클래스 추가하는 함수
