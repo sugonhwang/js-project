@@ -34,6 +34,15 @@
   - 할 일 수정
   - 완료 시간 설정(진행 예정)
 
+### 3. News API
+
+- **데모**: [Live Demo](https://sghwang-jsproject.netlify.app/js-news-api/)
+- **설명**: Javascript API 통신
+- **기술 스택**: HTML, CSS, JavaScript
+- **주요 기능**:
+  - News API를 활용하여 기사 불러오기
+  - `fetch`, `async`, `await`, 활용
+
 ## 🚀 로컬 실행 방법
 
 1. 저장소 클론
