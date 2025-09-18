@@ -8,6 +8,20 @@
   width: 400px;
 }
 
+.mobile-controls {
+  display: none;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.mobile-left-controls {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
 .menus {
   margin-top: 1em;
   display: flex;
@@ -43,11 +57,118 @@
 
 #search {
   display: flex;
-  justify-content: right;
+  justify-content: left;
 }
 
 .menus button.active {
   background-color: #333;
   color: white;
   transition: 0.3s;
+}
+
+/* 기본 숨김 */
+.menu-toggle,
+.close-menu,
+.search-toggle,
+.close-search {
+  display: none;
+}
+
+/* 반응형 (1024px 이하) */
+@media (max-width: 1024px) {
+  /* 모바일 컨트롤 영역 보이기 */
+  .mobile-controls {
+    display: flex;
+  }
+
+  /* 햄버거 버튼과 검색 토글 보이기 */
+  .menu-toggle,
+  .search-toggle {
+    display: block;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: black;
+    padding: 5px;
+  }
+
+  /* 기본 검색창 숨기기 */
+  #search {
+    display: none;
+  }
+
+  /* 모바일 검색창이 활성화될 때 */
+  #search.open {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    padding: 1em;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    z-index: 1500;
+    align-items: center;
+    gap: 10px;
+  }
+
+  #search.open input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .search-close {
+    display: none;
+  }
+
+  #search.open .search-close {
+    display: inline-block;
+    background: none;
+    border: none;
+    font-size: 1.2em;
+    cursor: pointer;
+    color: #666;
+  }
+
+  /* 메뉴 스타일 */
+  .menus {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 70%;
+    height: 100%;
+    background: white;
+    flex-direction: column;
+    padding: 1em;
+    box-shadow: 2px 0 6px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    border-top: none;
+    border-bottom: none;
+  }
+
+  .menus.open {
+    display: flex;
+  }
+
+  .menus button {
+    margin: 10px 0;
+    padding: 10px;
+    text-align: left;
+    border-radius: 4px;
+  }
+
+  .close-menu {
+    display: block;
+    align-self: flex-end;
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    margin-bottom: 1em;
+    color: #666;
+  }
 }

@@ -2,15 +2,18 @@ const API_KEY = `f636738a75f345269967e72b6d895e1a`;
 
 let newsList = [];
 let url = new URL(`https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?country=kr&apiKey=${API_KEY}`);
-const menuButton = document.querySelectorAll(".menus button");
+
+const menuButton = document.querySelectorAll(".menus button:not(.close-menu)");
 const searchInput = document.getElementById("search-input");
 
+// 엔터 입력 시 검색 수행 (조합 중인 한글 입력 처리 방지)
 searchInput.addEventListener("keydown", function (e) {
   if (e.key === "Enter" && !e.isComposing) {
     getNewsByKeyword();
   }
 });
 
+// 메뉴 버튼 클릭 시 카테고리 검색 호출
 menuButton.forEach((menu) => menu.addEventListener("click", (event) => getNewsCategory(event)));
 
 const getNews = async () => {
@@ -88,4 +91,54 @@ const setActiveButton = (activeCategory) => {
     }
   });
 };
+
+// 메뉴(패널) 토글: 모바일에서 햄버거 버튼을 눌러 .menus에 open 클래스를 붙였다 뗌
+const menuToggle = document.getElementById("menuToggle");
+const navMenu = document.getElementById("navMenu"); // .menus 요소
+const closeMenu = document.getElementById("closeMenu");
+
+if (menuToggle && navMenu) {
+  menuToggle.addEventListener("click", () => {
+    navMenu.classList.add("open");
+  });
+}
+if (closeMenu && navMenu) {
+  closeMenu.addEventListener("click", () => {
+    navMenu.classList.remove("open");
+  });
+}
+
+// 검색 토글: 모바일에서 돋보기 버튼을 눌러 검색 입력을 열고 닫을 수 있게 함
+const searchToggle = document.getElementById("searchToggle");
+const searchWrap = document.getElementById("search");
+const searchClose = document.getElementById("searchClose") || document.querySelector(".search-close");
+
+if (searchToggle && searchWrap) {
+  searchToggle.addEventListener("click", () => {
+    // #search에 open 클래스를 토글하면 CSS에서 검색 입력창을 보여주도록 함
+    searchWrap.classList.toggle("open");
+    // 열렸을 때 입력에 포커스
+    if (searchWrap.classList.contains("open")) {
+      const inp = document.getElementById("search-input");
+      if (inp) inp.focus();
+    }
+  });
+}
+if (searchClose && searchWrap) {
+  searchClose.addEventListener("click", () => {
+    searchWrap.classList.remove("open");
+  });
+}
+
+// 화면 크기 변경 시(데스크탑으로 돌아갈 때) 열려 있는 패널/검색창 닫기 처리
+window.addEventListener("resize", () => {
+  try {
+    if (window.innerWidth > 1024) {
+      if (navMenu) navMenu.classList.remove("open");
+      if (searchWrap) searchWrap.classList.remove("open");
+    }
+  } catch (e) {
+    // 무시
+  }
+});
 getLatestNews();
