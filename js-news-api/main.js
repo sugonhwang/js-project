@@ -20,7 +20,7 @@ const getNews = async () => {
   try {
     const response = await fetch(url);
     const data = await response.json();
-    // console.log(data);
+    console.log(data);
 
     if (response.status === 200) {
       if (data.totalResults === 0) {
@@ -58,18 +58,19 @@ const getNewsByKeyword = async () => {
 
 const render = () => {
   const newsHTML = newsList.map(
-    (news) => `<div class="row news">
+    (news) => `<a class="news-card-link target="_blank" href="${news.url}">
+    <div class="row news">
           <div class="col-lg-4">
-            <img class="news-img-size" src="${news.urlToImage || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqEWgS0uxxEYJ0PsOb2OgwyWvC0Gjp8NUdPw&usqp=CAU"}" alt="" />
+            <img class="news-img-size" src="${news.urlToImage && news.urlToImage.trim() !== "" ? news.urlToImage : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqEWgS0uxxEYJ0PsOb2OgwyWvC0Gjp8NUdPw&usqp=CAU"}" alt="${news.title || "뉴스 이미지 없음"}" />
           </div>
           <div class="col-lg-8">
             <h2>${news.title}</h2>
             <p>${news.description === null || news.description === "" ? "내용없음" : news.description.length >= 200 ? news.description.substring(0, 200) + "....." : news.description} 
             </p>
-            <div>${news.source.name || "no source"} ${moment(news.publishedAt).fromNow()}
-            </div>
+            <div>${news.source.name || "no source"} ${moment(news.publishedAt).fromNow()}</div>
           </div>
-        </div>`
+        </div>
+        </a>`
   );
 
   document.getElementById("news-board").innerHTML = newsHTML.join("");
