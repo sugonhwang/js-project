@@ -149,81 +149,116 @@ if (searchClose && searchWrap) {
   });
 }
 
-// 페이지 네이션 출력 함수
+// 반응형 디자인 고려한 페이지 네이션
 const pagiNationRender = () => {
   const totalPages = Math.ceil(totalResults / pageSize); // 전체 페이지 수
-  const pageGroup = Math.ceil(page / groupSize); // 현재 페이지가 속한 그룹 번호
+  const isMobile = window.innerWidth <= 768;
 
-  // 현재 그룹의 마지막 페이지
-  let lastPage = pageGroup * groupSize;
-  if (lastPage > totalPages) {
-    lastPage = totalPages; // 마지막 그룹 보정
-  }
-
-  // 현재 그룹의 첫 페이지
-  let firstPage = lastPage - (groupSize - 1);
-  if (firstPage < 1) {
-    firstPage = 1;
-  }
+  if (totalPages <= 1) return;
 
   let paginationHTML = "";
 
-  // << (맨처음)
-  if (page > 1) {
-    paginationHTML += `<li class="page-item" onclick="moveToPage(1)">
-                         <a class="page-link" href="#"><<</a>
-                       </li>`;
-  }
+  if (isMobile) {
+    if (page > 1) {
+      paginationHTML += `<li class="page-item" onclick="moveToPage(1)">
+                           <a class="page-link" href="#">⏪</a>
+                         </li>`;
+    }
 
-  // < (이전)
-  if (page > 1) {
-    paginationHTML += `<li class="page-item" onclick="moveToPage(${page - 1})">
-                         <a class="page-link" href="#">Previous</a>
-                       </li>`;
-  }
+    // < (이전)
+    if (page > 1) {
+      paginationHTML += `<li class="page-item" onclick="moveToPage(${page - 1})">
+                           <a class="page-link" href="#">⬅️</a>
+                         </li>`;
+    }
 
-  // 첫 페이지가 1이 아니면 1을 먼저 보여주고, 중간에 ... 표시
-  if (firstPage > 1) {
-    paginationHTML += `<li class="page-item" onclick="moveToPage(1)">
+    // 현재 페이지 정보
+    paginationHTML += `<li class="page-item active">
+                         <span class="page-link">${page} / ${totalPages}</span>
+                       </li>`;
+
+    // > (다음)
+    if (page < totalPages) {
+      paginationHTML += `<li class="page-item" onclick="moveToPage(${page + 1})">
+                           <a class="page-link" href="#">➡️</a>
+                         </li>`;
+    }
+
+    // >> (맨끝)
+    if (page < totalPages) {
+      paginationHTML += `<li class="page-item" onclick="moveToPage(${totalPages})">
+                           <a class="page-link" href="#">⏩</a>
+                         </li>`;
+    }
+  } else {
+    const pageGroup = Math.ceil(page / groupSize); // 현재 페이지가 속한 그룹 번호
+    let lastPage = pageGroup * groupSize; // 현재 그룹의 마지막 페이지
+    if (lastPage > totalPages) {
+      lastPage = totalPages; // 마지막 그룹 보정
+    }
+
+    // 현재 그룹의 첫 페이지
+    let firstPage = lastPage - (groupSize - 1);
+    if (firstPage < 1) {
+      firstPage = 1;
+    }
+
+    // << (맨처음)
+    if (page > 1) {
+      paginationHTML += `<li class="page-item" onclick="moveToPage(1)">
+                         <a class="page-link" href="#">⏮️</a>
+                       </li>`;
+    }
+
+    // < (이전)
+    if (page > 1) {
+      paginationHTML += `<li class="page-item" onclick="moveToPage(${page - 1})">
+                         <a class="page-link" href="#">⬅️</a>
+                       </li>`;
+    }
+
+    // 첫 페이지가 1이 아니면 1을 먼저 보여주고, 중간에 ... 표시
+    if (firstPage > 1) {
+      paginationHTML += `<li class="page-item" onclick="moveToPage(1)">
                          <a class="page-link" href="#">1</a>
                        </li>`;
-    if (firstPage > 2) {
-      paginationHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+      if (firstPage > 2) {
+        paginationHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+      }
     }
-  }
 
-  // 현재 그룹 페이지들 출력
-  for (let i = firstPage; i <= lastPage; i++) {
-    paginationHTML += `<li class="page-item ${i === page ? "active" : ""}" 
+    // 현재 그룹 페이지들 출력
+    for (let i = firstPage; i <= lastPage; i++) {
+      paginationHTML += `<li class="page-item ${i === page ? "active" : ""}" 
                           onclick="moveToPage(${i})">
                          <a class="page-link" href="#">${i}</a>
                        </li>`;
-  }
-
-  // 마지막 페이지가 totalPages가 아니면 ... 처리 후 마지막 페이지 출력
-  if (lastPage < totalPages) {
-    if (lastPage < totalPages - 1) {
-      paginationHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
     }
-    paginationHTML += `<li class="page-item" onclick="moveToPage(${totalPages})">
+
+    // 마지막 페이지가 totalPages가 아니면 ... 처리 후 마지막 페이지 출력
+    if (lastPage < totalPages) {
+      if (lastPage < totalPages - 1) {
+        paginationHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+      }
+      paginationHTML += `<li class="page-item" onclick="moveToPage(${totalPages})">
                          <a class="page-link" href="#">${totalPages}</a>
                        </li>`;
-  }
+    }
 
-  // > (다음)
-  if (page < totalPages) {
-    paginationHTML += `<li class="page-item" onclick="moveToPage(${page + 1})">
-                         <a class="page-link" href="#">Next</a>
+    // > (다음)
+    if (page < totalPages) {
+      paginationHTML += `<li class="page-item" onclick="moveToPage(${page + 1})">
+                         <a class="page-link" href="#">➡️</a>
                        </li>`;
-  }
+    }
 
-  // >> (맨끝)
-  if (page < totalPages) {
-    paginationHTML += `<li class="page-item" onclick="moveToPage(${totalPages})">
-                         <a class="page-link" href="#">>></a>
+    // >> (맨끝)
+    if (page < totalPages) {
+      paginationHTML += `<li class="page-item" onclick="moveToPage(${totalPages})">
+                         <a class="page-link" href="#">⏭️</a>
                        </li>`;
+    }
   }
-
   document.querySelector(".pagination").innerHTML = paginationHTML;
 };
 
