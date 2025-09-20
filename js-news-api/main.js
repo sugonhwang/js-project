@@ -3,6 +3,12 @@ const API_KEY = `f636738a75f345269967e72b6d895e1a`;
 let newsList = [];
 let url = new URL(`https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?country=kr&apiKey=${API_KEY}`);
 
+// 페이지 네이션 관련 변수
+let totalResults = 0; // 뉴스 API로 불러온 뉴스 목록 전체 수
+let page = 1; // 현재 페이지
+const pageSize = 10; // 한 페이지에 불러올 뉴스 목록 수
+const groupSize = 5;
+
 const menuButton = document.querySelectorAll(".menus button:not(.close-menu)");
 const searchInput = document.getElementById("search-input");
 
@@ -16,8 +22,11 @@ searchInput.addEventListener("keydown", function (e) {
 // 메뉴 버튼 클릭 시 카테고리 검색 호출
 menuButton.forEach((menu) => menu.addEventListener("click", (event) => getNewsCategory(event)));
 
+// News API 호출 및 에러 처리
 const getNews = async () => {
   try {
+    url.searchParams.set("page", page); // &page=1
+    url.searchParams.set("pageSize", pageSize);
     const response = await fetch(url);
     const data = await response.json();
     console.log(data);
@@ -27,7 +36,10 @@ const getNews = async () => {
         throw new Error("No Result Search your keyword");
       }
       newsList = data.articles;
+      totalResults = data.totalResults;
+
       render();
+      pagiNationRender();
     } else {
       throw new Error(data.message);
     }
@@ -37,25 +49,30 @@ const getNews = async () => {
   }
 };
 
+// 최신 뉴스 목록 불러오기
 const getLatestNews = async () => {
   url = new URL(`https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?country=kr&apiKey=${API_KEY}`);
   menuButton.forEach((button) => button.classList.remove("active"));
   getNews();
 };
 
+// 카테고리 별 뉴스 목록 불러오기
 const getNewsCategory = async (event) => {
   const category = event.target.textContent.toLowerCase();
-  url = new URL(`https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?category=${category}`);
+  url = new URL(`https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?country=kr&category=${category}&apiKey=${API_KEY}`);
   setActiveButton(category);
+  page = 1; // 새 카테고리 누르면 첫 페이지부터 시작
   getNews();
 };
 
+// 검색한 키워드 관련 뉴스 목록 불러오기
 const getNewsByKeyword = async () => {
   const keyword = document.getElementById("search-input").value;
-  url = new URL(`https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?q=${keyword}`);
+  url = new URL(`https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?q=${keyword}&country=kr&apiKey=${API_KEY}`);
   getNews();
 };
 
+// 화면에 뉴스 목록 보여주기
 const render = () => {
   const newsHTML = newsList.map(
     (news) => `<a class="news-card-link target="_blank" href="${news.url}">
@@ -76,6 +93,7 @@ const render = () => {
   document.getElementById("news-board").innerHTML = newsHTML.join("");
 };
 
+// 에러 메세지 출력
 const errRender = (errorMessage) => {
   const errHTML = `<div class="alert alert-danger" role="alert">
   ${errorMessage}
@@ -130,6 +148,90 @@ if (searchClose && searchWrap) {
     searchWrap.classList.remove("open");
   });
 }
+
+// 페이지 네이션 출력 함수
+const pagiNationRender = () => {
+  const totalPages = Math.ceil(totalResults / pageSize); // 전체 페이지 수
+  const pageGroup = Math.ceil(page / groupSize); // 현재 페이지가 속한 그룹 번호
+
+  // 현재 그룹의 마지막 페이지
+  let lastPage = pageGroup * groupSize;
+  if (lastPage > totalPages) {
+    lastPage = totalPages; // 마지막 그룹 보정
+  }
+
+  // 현재 그룹의 첫 페이지
+  let firstPage = lastPage - (groupSize - 1);
+  if (firstPage < 1) {
+    firstPage = 1;
+  }
+
+  let paginationHTML = "";
+
+  // << (맨처음)
+  if (page > 1) {
+    paginationHTML += `<li class="page-item" onclick="moveToPage(1)">
+                         <a class="page-link" href="#"><<</a>
+                       </li>`;
+  }
+
+  // < (이전)
+  if (page > 1) {
+    paginationHTML += `<li class="page-item" onclick="moveToPage(${page - 1})">
+                         <a class="page-link" href="#">Previous</a>
+                       </li>`;
+  }
+
+  // 첫 페이지가 1이 아니면 1을 먼저 보여주고, 중간에 ... 표시
+  if (firstPage > 1) {
+    paginationHTML += `<li class="page-item" onclick="moveToPage(1)">
+                         <a class="page-link" href="#">1</a>
+                       </li>`;
+    if (firstPage > 2) {
+      paginationHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+    }
+  }
+
+  // 현재 그룹 페이지들 출력
+  for (let i = firstPage; i <= lastPage; i++) {
+    paginationHTML += `<li class="page-item ${i === page ? "active" : ""}" 
+                          onclick="moveToPage(${i})">
+                         <a class="page-link" href="#">${i}</a>
+                       </li>`;
+  }
+
+  // 마지막 페이지가 totalPages가 아니면 ... 처리 후 마지막 페이지 출력
+  if (lastPage < totalPages) {
+    if (lastPage < totalPages - 1) {
+      paginationHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+    }
+    paginationHTML += `<li class="page-item" onclick="moveToPage(${totalPages})">
+                         <a class="page-link" href="#">${totalPages}</a>
+                       </li>`;
+  }
+
+  // > (다음)
+  if (page < totalPages) {
+    paginationHTML += `<li class="page-item" onclick="moveToPage(${page + 1})">
+                         <a class="page-link" href="#">Next</a>
+                       </li>`;
+  }
+
+  // >> (맨끝)
+  if (page < totalPages) {
+    paginationHTML += `<li class="page-item" onclick="moveToPage(${totalPages})">
+                         <a class="page-link" href="#">>></a>
+                       </li>`;
+  }
+
+  document.querySelector(".pagination").innerHTML = paginationHTML;
+};
+
+// 페이지 이동
+const moveToPage = (pageNum) => {
+  page = pageNum;
+  getNews();
+};
 
 // 화면 크기 변경 시(데스크탑으로 돌아갈 때) 열려 있는 패널/검색창 닫기 처리
 window.addEventListener("resize", () => {
